@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "PizzaProjekt";
+}
+
+<div class="jumbotron" style="background-image: url('/Content/Images/pizza.jpg');">
+    <p class="lead" style="background-color: red;">
+        Technologie dla aplikacji klasy enterprise<br />
+        Maciejewski Paweł<br />
+        Projekt na ocenę 5<br />
+    </p>
+</div>
+
+<div class="row" style="background-image: url('/Content/Images/manage.png');">
+    <div class="col-md-offset-2 col-md-4">
+        <h2 style="background-color: gray;">Zarządzaj pizzami</h2>
+        <p style="background-color: gray;">Dodawaj, usuwaj i edytuj pizze</p>
+        <p>
+            @Html.ActionLink("Kliknij tutaj", "Index", "Pizzas", null, new { @class = "btn btn-info" })
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2 style="background-color: gray;">Zarządzaj składnikami</h2>
+        <p style="background-color: gray;">Dodawaj, usuwaj i edytuj składniki</p>
+        <p>
+            @Html.ActionLink("Kliknij tutaj", "Index", "Ingredients", null, new { @class = "btn btn-info" })
+        </p>
+    </div>
+</div>

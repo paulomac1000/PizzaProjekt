@@ -1,0 +1,60 @@
+﻿@using PizzaProjekt.Helpers
+@using PizzaProjekt.Models.Enums
+@model PizzaProjekt.ViewModels.PizzaViewModel
+
+@{
+    ViewBag.Title = "Usuń";
+}
+
+<h3>Czy na pewno chcesz usunąć tę pizzę?</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Pizza @Size.Small.GetDescription().ToLower() - ceny
+        </dt>
+        <dd>
+            Ciasto @Batter.Thick.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.Small).Price<br />
+            Ciasto @Batter.Thin.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.Small).Price
+        </dd>
+
+        <dt>
+            Pizza @Size.Medium.GetDescription().ToLower() - ceny
+        </dt>
+        <dd>
+            Ciasto @Batter.Thick.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.Medium).Price<br />
+            Ciasto @Batter.Thin.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.Medium).Price
+        </dd>
+
+        <dt>
+            Pizza @Size.High.GetDescription().ToLower() - ceny
+        </dt>
+        <dd>
+            Ciasto @Batter.Thick.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.High).Price<br />
+            Ciasto @Batter.Thin.GetDescription().ToLower(): @Model.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.High).Price
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-danger" />
+            @Html.ActionLink("Wróć do listy", "Index", "Pizzas", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

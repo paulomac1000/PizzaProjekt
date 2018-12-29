@@ -1,0 +1,44 @@
+﻿@model PizzaProjekt.ViewModels.IngredientViewModel
+
+@{
+    ViewBag.Title = "Usuń";
+}
+
+<h3>Czy na pewno chcesz usunąć ten składnik?</h3>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsedInPizzasCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsedInPizzasCount)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-danger" />
+            @Html.ActionLink("Wróć do listy", "Index", "Ingredients", null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

@@ -1,0 +1,38 @@
+﻿@model PizzaProjekt.ViewModels.IngredientViewModel
+
+@{
+    ViewBag.Title = "Szczegóły";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsedInPizzasCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsedInPizzasCount)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @Html.ActionLink("Edytuj", "Edit", "Ingredients", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Wróć do listy", "Index", "Ingredients", null, new { @class = "btn btn-primary" })
+</div>

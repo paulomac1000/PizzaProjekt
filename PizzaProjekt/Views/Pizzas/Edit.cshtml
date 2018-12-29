@@ -1,0 +1,143 @@
+﻿@model PizzaProjekt.ViewModels.PizzaViewModel
+
+@Styles.Render("~/Content/Chosen")
+@Scripts.Render("~/bundles/Chosen")
+
+@{
+    ViewBag.Title = "Dodaj nową pizzę";
+}
+
+<script>
+    $(document).ready(function () {
+        $("#ingredients").chosen({ width: "45%" });
+        $('#ingredients').val([@string.Join(",", Model.IngredientsIds)]);
+        $('#ingredients').trigger("chosen:updated");
+    });
+
+    $(document).on('click', '#edit-pizza-btn', function(e) {
+        e.preventDefault();
+        $('#create-pizza-btn').attr("disabled", "disabled");
+
+        var data = {
+            __RequestVerificationToken: getRequestVerificationToken(),
+            Id: @Model.Id,
+            Name: $('#Name').val(),
+            IngredientsIds: $('#ingredients').val(),
+            Versions: $("input[id^='price-']").map(function () {
+                return {
+                    Size: $(this).attr('id').split('-')[1],
+                    Batter: $(this).attr('id').split('-')[2],
+                    Price: $(this).val()
+                };
+            }).toArray()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/Pizzas/Edit',
+            data: data,
+            cache: false,
+            success: function success(response) {
+                if (response.dataValid) {
+                    window.location.replace('../Index');
+                } else {
+                    addErrors(response.errors);
+                }
+                $('#create-pizza-btn').removeAttr("disabled");
+            },
+            error: function error(e) {
+                console.log(e);
+                alert('Nie udało się wysłać żądania.');
+                $('#create-pizza-btn').removeAttr("disabled");
+            }
+        });
+    });
+</script>
+
+<div class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            <label>Składaniki</label>
+        </div>
+        <div class="col-md-10">
+            @Html.DropDownList($"ingredients", new SelectList(ViewBag.Ingredients, "Id", "Name"), string.Empty, new { multiple = "multiple", @class = "form-control", style = "width:50%;" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            <label>Ceny</label>
+        </div>
+        <div class="col-md-10">
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        Rozmiar
+                    </th>
+                    <th>
+                        Ciasto
+                    </th>
+                    <th>
+                        Cena
+                    </th>
+                </tr>
+
+                @foreach (var size in ViewBag.Sizes)
+                {
+                    foreach (var batter in ViewBag.Batters)
+                    {
+                        <tr>
+                            <td>
+                                @size.Value
+                            </td>
+                            <td>
+                                @batter.Value
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input id="price-@size.Key-@batter.Key"
+                                           name="price-@size.Key-@batter.Key"
+                                           type="number"
+                                           min="1"
+                                           step="0.01"
+                                           data-number-to-fixed="2"
+                                           data-number-stepfactor="100"
+                                           style="text-align: right; padding-right: 15px;"
+                                           value="@Model.Versions.First(v => (int)v.Size == size.Key && (int)v.Batter == batter.Key).Price">
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="edit-pizza-btn" type="submit" value="Edytuj" class="btn btn-default" />
+        </div>
+    </div>
+
+    <div class="col-md-offset-1 col-md-11">
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Wróć do listy", "Index", "Pizzas", null, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

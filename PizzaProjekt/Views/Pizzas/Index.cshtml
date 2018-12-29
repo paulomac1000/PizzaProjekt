@@ -1,0 +1,71 @@
+﻿@using PizzaProjekt.Helpers
+@using PizzaProjekt.Models.Enums
+@model IEnumerable<PizzaProjekt.ViewModels.PizzaViewModel>
+
+@{
+    ViewBag.Title = "Pizze";
+}
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Pizza @Size.Small.GetDescription().ToLower() - ceny
+            </th>
+            <th>
+                Pizza @Size.Medium.GetDescription().ToLower() - ceny
+            </th>
+            <th>
+                Pizza @Size.High.GetDescription().ToLower() - ceny
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    Ciasto @Batter.Thick.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.Small).Price<br />
+                    Ciasto @Batter.Thin.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.Small).Price
+                </td>
+                <td>
+                    Ciasto @Batter.Thick.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.Medium).Price<br />
+                    Ciasto @Batter.Thin.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.Medium).Price
+                </td>
+                <td>
+                    Ciasto @Batter.Thick.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thick && p.Size == Size.High).Price<br />
+                    Ciasto @Batter.Thin.GetDescription().ToLower(): @item.Versions.First(p => p.Batter == Batter.Thin && p.Size == Size.High).Price
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        <strong>Uwaga!</strong> Nie dodano jeszcze żadnej pizzy.
+    </div>
+}
+
+
+<p>
+    @Html.ActionLink("Dodaj nową pizzę", "Create", "Pizzas", null, new { @class = "btn btn-primary" })
+</p>
